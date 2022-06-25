@@ -11,6 +11,6 @@ install_if_missing = function(p) {
     install.packages(p)
   }
 }
-install.packages("StepReg_1.4.2.zip",repos = NULL, type = "win.binary")
-
+#install.packages("StepReg_1.4.2.zip",repos = NULL, type = "win.binary")
+install.packages("StepReg.tar.gz", repos = NULL, type = "source")
 invisible(sapply(my_packages, install_if_missing))
