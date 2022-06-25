@@ -429,13 +429,15 @@ shinyServer(function(input, output, session) {
           XY_active$Y <- Y
         }
         
+        #Finding second order terms
+        print(XY_active)
         second_order_candidates <- stepwise(XY_active, y="Y", selection = "forward", select="SL", Choose="AICc", sle=0.2, include = c())
         tmp <- second_order_candidates$process$EffectEntered
         effects_for_X2 <- tmp[-grep("intercept", tmp)]
         tmp2 <- second_order_candidates$variate
         selected_effects_for_X2 <- tmp2[-grep("intercept", tmp2)]
         
-        
+        #update selectinput
         if ((input$model_selection == "Hereditary AICc")) {
           updateSelectInput(session, "selectX1", choices = colnames(X), selected = colnames(X_main))
           updateSelectInput(session, "selectX2", 
