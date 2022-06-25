@@ -430,28 +430,22 @@ shinyServer(function(input, output, session) {
         }
         
         #Finding second order terms
-        second_order_candidates <- stepwise(XY_active, y="Y", selection = "forward", select="SL", Choose="AICc", sle=0.2, include = c())
-        #formula = Y~.
-        #print(XY_active)
-        #second_order_candidates <- stepwise(formula=formula, data=XY_active, selection = "forward", select="AICc", sle=0.2)
-        #print(second_order_candidates)
-        #due to the change in StepReg. see the manual.
-        tmp <- second_order_candidates$process$EffectEntered
-        effects_for_X2 <- tmp[-grep("intercept", tmp)]
-        tmp2 <- second_order_candidates$variate
-        selected_effects_for_X2 <- tmp2[-grep("intercept", tmp2)]
+        #second_order_candidates <- stepwise(XY_active, y="Y", selection = "forward", select="SL", Choose="AICc", sle=0.2, include = c())
+        second_order_candidates <- stepwise(Y~., data=XY_active, selection = "forward", select="AICc", sle=0.2)
+        tmp2 <- second_order_candidates[["Varaibles"]]
+        selected_effects_for_X2 <- tmp2[-grep("1", tmp2)]
         
         #update selectinput
         if ((input$model_selection == "Hereditary AICc")) {
           updateSelectInput(session, "selectX1", choices = colnames(X), selected = colnames(X_main))
-          updateSelectInput(session, "selectX2", 
+          updateSelectInput(session, "selectX2",
                             choices = colnames( setdiff(add_quadratic(X), X)),
                             selected = selected_effects_for_X2)
         }
         if (input$model_selection == "AICc"){
           main_factors <- unique(unlist((strsplit(selected_effects_for_X2, "\\."))))
           updateSelectInput(session, "selectX1", choices = colnames(X), selected = main_factors)
-          updateSelectInput(session, "selectX2", 
+          updateSelectInput(session, "selectX2",
                             choices = colnames( setdiff(add_quadratic(X), X)),
                             selected = setdiff(selected_effects_for_X2, main_factors))
         }
@@ -469,9 +463,7 @@ shinyServer(function(input, output, session) {
     }else if (length(isolate(input$selectXF))<1 & isolate(nc())==1){
       cat("Please include at least ONE fake factor or TWO center runs!\n")
     }else if (is.list(calc_second_order_effects())) {
-        so <- calc_second_order_effects()$process
-        names(so) <- c("Step", "Effect", "Order", "AICc", "Choose")
-        return(so[c("Effect", "AICc")])
+      return(calc_second_order_effects()$Coefficients)
     }else{
       return(calc_second_order_effects())
     }
