@@ -431,7 +431,8 @@ shinyServer(function(input, output, session) {
         
         #Finding second order terms
         #second_order_candidates <- stepwise(XY_active, y="Y", selection = "forward", select="SL", Choose="AICc", sle=0.2, include = c())
-        second_order_candidates <- stepwise(Y~., data=XY_active, selection = "forward", select="AICc", sle=0.2, include = c())
+        formula = Y~.
+        second_order_candidates <- stepwise(formula=formula, data=XY_active, selection = "forward", select="AICc", sle=0.2)
         #due to the change in StepReg. see the manual.
         tmp <- second_order_candidates$process$EffectEntered
         effects_for_X2 <- tmp[-grep("intercept", tmp)]
