@@ -430,8 +430,8 @@ shinyServer(function(input, output, session) {
         }
         
         #Finding second order terms
-        print(XY_active)
-        second_order_candidates <- stepwise(XY_active, y="Y", selection = "forward", select="SL", Choose="AICc", sle=0.2, include = c())
+        #second_order_candidates <- stepwise(XY_active, y="Y", selection = "forward", select="SL", Choose="AICc", sle=0.2, include = c())
+        second_order_candidates <- stepwise(Y~., data=XY_active, selection = "forward", select="SL", Choose="AICc", sle=0.2, include = c())
         tmp <- second_order_candidates$process$EffectEntered
         effects_for_X2 <- tmp[-grep("intercept", tmp)]
         tmp2 <- second_order_candidates$variate
