@@ -1,11 +1,11 @@
 library(shiny)
-library(StepReg)
 library(daewr)
-#library(ggplot2)
+library(MuMIn)#AICc
 source("add_model_terms.R", local = TRUE)
 source("expression.R", local = TRUE)
 source("fn.R", local = TRUE)
 source("Desirability.R", local = TRUE)
+source("forward-stepwise.R", local = TRUE)
 
 
 shinyServer(function(input, output, session) {
@@ -230,7 +230,7 @@ shinyServer(function(input, output, session) {
     if (length(isolate(input$selectX))<4) {
       cat("At least FOUR factors must be included!\n")
     }else if ((length(isolate(input$selectXF))<1) & isolate(nc())==1) {
-      cat("Please include at least ONE fake factor or TWO center runs!\n")
+      cat("Please include at least ONE fake factor or TWO center runs for more reliable analysis!\n")
     }else if (isolate(Y())=="NotSpecifiedY"){
       cat("Y must be specified!\n")
     }else if (is.list(regression())){
@@ -305,15 +305,12 @@ shinyServer(function(input, output, session) {
     X <- X()[!is.na(Y()),]
     Y <- Y()[!is.na(Y())]
     
+    #Fake factorが無い場合
     if ((isolate(nc())==1&(length(isolate(input$selectXF))==0)) | nrow(df())!=nrow(d)) {
-      updateRadioButtons(session, "model_selection", "Model selection strategy", c("Hereditary AICc", "AICc"), selected="AICc")
-      XY_active <- add_quadratic(X)
-      XY_active$Y <- Y
-      second_order_candidates <- stepwise(XY_active, y="Y", selection = "forward", select="SL", Choose="AICc", sle=0.2, include = c())
-      tmp <- second_order_candidates$process$EffectEntered
-      effects_for_X2 <- tmp[-grep("intercept", tmp)]
-      tmp2 <- second_order_candidates$variate
-      selected_effects_for_X2 <- tmp2[-grep("intercept", tmp2)]
+      second_order_candidates <- selectX2_all(X_resevoir = add_quadratic(X), Y)
+      s <- second_order_candidates
+      min_ind <- which(unlist(s[["AICc"]]==min(unlist(s[["AICc"]]))))
+      selected_effects_for_X2 <- unlist(s[["params"]][min_ind])
       main_factors <- unique(unlist((strsplit(selected_effects_for_X2, "\\."))))
       if (length(main_factors)!=0) {
         updateSelectInput(session, "selectX1", choices = colnames(X), selected = main_factors)
@@ -321,7 +318,6 @@ shinyServer(function(input, output, session) {
                           choices = colnames( setdiff(add_quadratic(X), X)),
                           selected = setdiff(selected_effects_for_X2, main_factors))        
       }
-
       return(second_order_candidates)
     }
     if (length(input$selectX)>3 & (isolate(nc())>1|(length(isolate(input$selectXF))>0))) {
@@ -356,15 +352,12 @@ shinyServer(function(input, output, session) {
       if (se!=0) {
         X_main <- X[abs(result1$coefficients[-1]/se)>t]#有効な主効果
 
-        if ( length(X_main)==0 |nrow(df())!=nrow(d) ) {
-            XY_active <- add_quadratic(X)
-            XY_active$Y <- Y
-            updateRadioButtons(session, "model_selection", "Model selection strategy", c("Hereditary AICc", "AICc"), selected="AICc")
-            second_order_candidates <- stepwise(XY_active, y="Y", selection = "forward", select="SL", Choose="AICc", sle=0.2, include = c())
-            tmp <- second_order_candidates$process$EffectEntered
-            effects_for_X2 <- tmp[-grep("intercept", tmp)]
-            tmp2 <- second_order_candidates$variate
-            selected_effects_for_X2 <- tmp2[-grep("intercept", tmp2)]
+        if ( length(X_main)==0 |nrow(df())!=nrow(d) ) {#有効な主効果が無い場合は、全ての2次項でfoward-stepwise
+            second_order_candidates <- selectX2_all(X_resevoir = add_quadratic(X), Y)
+            s <- second_order_candidates
+            min_ind <- which(unlist(s[["AICc"]]==min(unlist(s[["AICc"]]))))
+            selected_effects_for_X2 <- unlist(s[["params"]][min_ind])
+            
             main_factors <- unique(unlist((strsplit(selected_effects_for_X2, "\\."))))
             if (length(main_factors)!=0) {
               updateSelectInput(session, "selectX1", choices = colnames(X), selected = main_factors)
@@ -391,7 +384,6 @@ shinyServer(function(input, output, session) {
       }
       
       if (length(X_main)==1) {
-        
         updateSelectInput(session, "selectX1", choices = colnames(X), selected = colnames(X_main))
         updateSelectInput(session, "selectX2", 
                           choices = colnames( setdiff(add_quadratic(X), X)),
@@ -401,73 +393,37 @@ shinyServer(function(input, output, session) {
       
       if (length(X_main)>1) {
         #Model Selection = Hereditary AICc
-        if (input$model_selection == "Hereditary AICc") {
-          X2 <- add_quadratic(X_main)
-          XY_active <- X2[,(ncol(X_main)+1):ncol(X2)]
-          XY_active$Y <- result_first$residuals
-        }
+        X2 <- add_quadratic(X_main)
+        XY_active <- X2[,(ncol(X_main)+1):ncol(X2)]
+        XY_active$Y <- result_first$residuals
+        second_order_candidates <- selectX2(X_main=X, X_resevoir = add_quadratic(X, only_additional=TRUE), Y)
         
-        #Model Selection = Weak heredity
-        # if (input$model_selection == "Weak heredity") {
-        #   X2_wh <- add_quadratic(X)
-        #   Active_index <- charmatch(colnames(X_main), colnames(X2_wh))#main effects' index
-        #   Omit_fisrt_order <- Active_index
-        #   for (effect in colnames(X_main)) {
-        #       index <- grep(effect, colnames(X2_wh))
-        #       Active_index <- append(Active_index, index)
-        #   }
-        #   Active_index <- c(unique(Active_index))
-        #   Active_index <- Active_index[Active_index!=Omit_fisrt_order]#omit main effects
-        #   XY_active <- X2_wh[Active_index]
-        #   XY_active$Y <- result_first$residuals
-        # }
-    
+        s <- second_order_candidates
+        min_ind <- which(unlist(s[["AICc"]]==min(unlist(s[["AICc"]]))))
+        selected_effects_for_X2 <- unlist(s[["params"]][min_ind])
         
-        #Model Selection = No heredity
-        if (input$model_selection == "AICc"){
-          XY_active <- add_quadratic(X)
-          XY_active$Y <- Y
-        }
-        
-        #Finding second order terms
-        #second_order_candidates <- stepwise(XY_active, y="Y", selection = "forward", select="SL", Choose="AICc", sle=0.2, include = c())
-        second_order_candidates <- stepwise(Y~., data=XY_active, selection = "forward", select="AICc", sle=0.2)
-        tmp2 <- second_order_candidates[["Varaibles"]]
-        selected_effects_for_X2 <- tmp2[-grep("1", tmp2)]
-        
-        #update selectinput
-        if ((input$model_selection == "Hereditary AICc")) {
-          updateSelectInput(session, "selectX1", choices = colnames(X), selected = colnames(X_main))
-          updateSelectInput(session, "selectX2",
-                            choices = colnames( setdiff(add_quadratic(X), X)),
-                            selected = selected_effects_for_X2)
-        }
-        if (input$model_selection == "AICc"){
-          main_factors <- unique(unlist((strsplit(selected_effects_for_X2, "\\."))))
-          updateSelectInput(session, "selectX1", choices = colnames(X), selected = main_factors)
-          updateSelectInput(session, "selectX2",
-                            choices = colnames( setdiff(add_quadratic(X), X)),
-                            selected = setdiff(selected_effects_for_X2, main_factors))
-        }
+        updateSelectInput(session, "selectX1", choices = colnames(X), selected = colnames(X_main))
+        updateSelectInput(session, "selectX2",
+                          choices = colnames( setdiff(add_quadratic(X), X)),
+                          selected = selected_effects_for_X2)
         return(second_order_candidates)
       }
-      
     }
-  
   })
   
   output$select_second_order_effects <- renderPrint({
     input$Find_active_terms
     if (length(isolate(input$selectX))<4){
-      cat("At least FOUR factrs must be included!\n")
+      return(cat("At least FOUR factrs must be included!\n"))
     }else if (length(isolate(input$selectXF))<1 & isolate(nc())==1){
-      cat("Please include at least ONE fake factor or TWO center runs!\n")
-    }else if (is.list(calc_second_order_effects())) {
-      return(calc_second_order_effects()$Coefficients)
-    }else{
-      return(calc_second_order_effects())
+      cat("Please include at least ONE fake factor or TWO center runs for more reliable analysis!\n")
     }
-    
+    s <- calc_second_order_effects()
+    cat("AICc","\t","\t", "temrs", "\n")
+    for (i in 1:length(s[["params"]])) {
+      cat(unlist(s[["AICc"]][i]),"\t")
+      cat(unlist(s[["params"]][i]), "\n")
+    }
   })
   
 
@@ -478,8 +434,6 @@ shinyServer(function(input, output, session) {
       if(length(input$selectX)>3 & 
          isolate(nc())>1|length(isolate(input$selectXF)>0)&
          ((length(input$selectX1)>0)|(length(input$selectX2)>0)) ) {
-          #X <- X()[!is.na(Y()),]
-          #Y <- Y()[!is.na(Y())]
           XY <- cbind(add_quadratic(X()), Y())
           XY_reg <- cbind(XY[input$selectY], XY[input$selectX1], XY[input$selectX2])
           result_combined <- lm(data = XY_reg)

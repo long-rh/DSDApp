@@ -68,7 +68,7 @@ shinyUI(
                             #              "Number of center runs",
                             #              min=1,
                             #              value=1),
-                            radioButtons("model_selection", "Model selection", c("Hereditary AICc", "AICc")),
+                            #radioButtons("model_selection", "Model selection", c("Hereditary AICc", "AICc")),
                             actionButton("Find_active_terms", "Find active terms"),
                             h1(" "),
                             hr(),
