@@ -432,7 +432,7 @@ shinyServer(function(input, output, session) {
   regression_combined <- eventReactive(input$Build_combined_model, {
     if (isolate(Y())!="NotSpecifiedY"){
       if(length(input$selectX)>3 & 
-         isolate(nc())>1|length(isolate(input$selectXF)>0)&
+         #isolate(nc())>1|length(isolate(input$selectXF)>0)&
          ((length(input$selectX1)>0)|(length(input$selectX2)>0)) ) {
           XY <- cbind(add_quadratic(X()), Y())
           XY_reg <- cbind(XY[input$selectY], XY[input$selectX1], XY[input$selectX2])
