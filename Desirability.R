@@ -55,7 +55,7 @@ Desirability <- function(y1, L, t, U, purpose="minimize", weight=1){
 #plot(y, Desirability(y, NA, 1, 3, "minimize"), "l")
 #plot(y, Desirability(y, 1, 3, NA, "maximize"), "l")
 #plot(y, Desirability(y, 1, 2, 3, "target"), "l")
-# # 
+ 
 # # 
 # y <- seq(-10, 10, 1)
 # plot(y, Desirability(y, 1, 5, -50, "maximize"))

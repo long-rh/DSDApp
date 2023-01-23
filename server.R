@@ -393,10 +393,21 @@ shinyServer(function(input, output, session) {
       
       if (length(X_main)>1) {
         #Model Selection = Hereditary AICc
-        X2 <- add_quadratic(X_main)
-        XY_active <- X2[,(ncol(X_main)+1):ncol(X2)]
-        XY_active$Y <- result_first$residuals
-        second_order_candidates <- selectX2(X_main=X, X_resevoir = add_quadratic(X, only_additional=TRUE), Y)
+        #X2 <- add_quadratic(X_main)
+        #XY_active <- X2[,(ncol(X_main)+1):ncol(X2)]
+        #XY_active$Y <- result_first$residuals
+        #Weak Heredity
+        # X2 <- add_quadratic(X, only_additional = T)
+        # tfi_index <- c()
+        # for (i in 1:ncol(X_main)) {
+        #   tfi_index <- append(tfi_index, grep(colnames(X_main)[i], colnames(X2)))
+        # }
+        # tfi_index <- unique(tfi_index)
+        # X2_candidate <- X2[,tfi_index]
+        # second_order_candidates <- selectX2(X_main=X_main, X_resevoir = X2_candidate,  result_first$residuals)
+        
+        #Strong Heredity
+        second_order_candidates <- selectX2(X_main=X_main, X_resevoir = add_quadratic(X_main, only_additional = T),  result_first$residuals)
         
         s <- second_order_candidates
         min_ind <- which(unlist(s[["AICc"]]==min(unlist(s[["AICc"]]))))
@@ -419,6 +430,9 @@ shinyServer(function(input, output, session) {
       cat("Please include at least ONE fake factor or TWO center runs for more reliable analysis!\n")
     }
     s <- calc_second_order_effects()
+    if (input$Modify_model) {
+      s <- regression_modified()
+    }
     cat("AICc","\t","\t", "temrs", "\n")
     for (i in 1:length(s[["params"]])) {
       cat(unlist(s[["AICc"]][i]),"\t")
@@ -429,6 +443,45 @@ shinyServer(function(input, output, session) {
 
   
   #Combined model
+  regression_modified <- eventReactive(input$Modify_model, {
+    if (isolate(Y())!="NotSpecifiedY"){
+      if(length(input$selectX)>3 & 
+         #isolate(nc())>1|length(isolate(input$selectXF)>0)&
+         ((length(input$selectX1)>0)|(length(input$selectX2)>0)) ) {
+        X <- X()[!is.na(Y()),]
+        Y <- Y()[!is.na(Y())]
+        X_main <- X[,input$selectX1]
+        XY <- cbind(Y, X_main)
+        result_first <- lm(data = XY)
+        # Weak heredity
+        # X2 <- add_quadratic(X, only_additional = T)
+        # tfi_index <- c()
+        # for (i in 1:ncol(X_main)) {
+        #   tfi_index <- append(tfi_index, grep(colnames(X_main)[i], colnames(X2)))
+        # }
+        # tfi_index <- unique(tfi_index)
+        # X2_candidate <- X2[,tfi_index]
+        #second_order_candidates <- selectX2(X_main=X_main, X_resevoir = X2_candidate,  result_first$residuals)
+        
+        #Strong Heredity
+        second_order_candidates <- selectX2(X_main=X_main, X_resevoir = add_quadratic(X_main, only_additional = T),  result_first$residuals)
+        
+        s <- second_order_candidates
+        min_ind <- which(unlist(s[["AICc"]]==min(unlist(s[["AICc"]]))))
+        selected_effects_for_X2 <- unlist(s[["params"]][min_ind])
+
+        updateSelectInput(session, "selectX1", choices = colnames(X), selected = colnames(X_main))
+        updateSelectInput(session, "selectX2",
+                          choices = colnames( setdiff(add_quadratic(X), X)),
+                          selected = selected_effects_for_X2)
+        return(second_order_candidates)
+      }
+    }else{
+      return("model_modification_failure")
+    }
+  })
+  
+  
   regression_combined <- eventReactive(input$Build_combined_model, {
     if (isolate(Y())!="NotSpecifiedY"){
       if(length(input$selectX)>3 & 
@@ -485,14 +538,15 @@ shinyServer(function(input, output, session) {
   })
   
   update_pred <- observeEvent(input$Build_combined_model, {
-    updateSelectInput(session, "select_X_pred", choices = input$selectX1)
+    choices <- unique(unlist(strsplit(c(input$selectX1, input$selectX2), split = "\\.")))
+    updateSelectInput(session, "select_X_pred", choices = choices)
     if(is.list(regression_combined())){
       X_pred_list <<- c()
       if (length(input$selectX1)>0) {
-        for (i in 1:length(input$selectX1)) {
+        for (i in 1:length(choices)) {
           X_pred_list <<- append(X_pred_list, input$X_pred)
         }
-        names(X_pred_list) <<- input$selectX1
+        names(X_pred_list) <<- choices
       }
     }
   })

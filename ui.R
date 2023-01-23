@@ -76,7 +76,8 @@ shinyUI(
                             h4("Step2"),
                             selectInput("selectX1", "X1", multiple = TRUE, choices = ""),
                             selectInput("selectX2", "X2", multiple = TRUE, choices = ""),
-                            actionButton("Build_combined_model", "Build model"),
+                            actionButton("Build_combined_model", "Build"),
+                            actionButton("Modify_model", "Modify"),
                             hr(),
                             actionButton("Register_model", "Register model")
                           )

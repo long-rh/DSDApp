@@ -12,7 +12,7 @@ add_quadratic <- function(df, only_additional=FALSE, only_quad=FALSE){
           b <- colnames(df)[j]
           cnt <- cnt + 1
           df <- data.frame(df, df[a]*df[b])
-          colnames(df)[k+cnt] <- paste0(a,".",b)
+          colnames(df)[k+cnt] <- paste(a,b, sep=".")
         } 
       }
     }
@@ -22,7 +22,7 @@ add_quadratic <- function(df, only_additional=FALSE, only_quad=FALSE){
     a <- colnames(df)[i]
     cnt <- cnt + 1
     df <- data.frame(df, df[a]*df[a])
-    colnames(df)[k+cnt] <- paste0(a,".",a)
+    colnames(df)[k+cnt] <- paste(a,a, sep = ".")
   }
   if (only_additional) {
     return(df[(k+1):ncol(df)])
@@ -30,7 +30,6 @@ add_quadratic <- function(df, only_additional=FALSE, only_quad=FALSE){
     return(df)
   }
 }
-
 
 add_interaction <- function(df, only_additional=FALSE){
   k <- ncol(df)
@@ -43,7 +42,7 @@ add_interaction <- function(df, only_additional=FALSE){
         b <- colnames(df)[j]
         cnt <- cnt + 1
         df <- data.frame(df, df[a]*df[b])
-        colnames(df)[k+cnt] <- paste0(a,".",b)
+        colnames(df)[k+cnt] <- paste(a,b, sep=".")
       } 
     }
   }
@@ -53,3 +52,4 @@ add_interaction <- function(df, only_additional=FALSE){
     return(df)
   }
 }
+add_quadratic(a)
