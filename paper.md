@@ -9,12 +9,12 @@ authors:
     orcid: 0000-0003-1160-3846
     equal-contrib: true
     affiliation: 1
-  - name: Pablo Cayado,
-    orcid:
+  - name: Pablo Cayado
+    orcid: 0000-0003-1160-3846
     equal-contrib: true
     affiliation: 2
 - name: Jens Hänisch
-  orcid:
+    orcid: 0000-0003-1160-3846
     equal-contrib: true
     affiliation: 1
 
