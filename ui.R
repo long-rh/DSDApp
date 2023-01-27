@@ -41,7 +41,7 @@ shinyUI(
                  )
                ),
                HTML('<div class="container">
-                    <footer> <p>Copywrite 2021 Ryoichiro Hayasaka</p></footer>
+                    <footer> <p>Copyright 2021 Ryoichiro Hayasaka</p></footer>
                     </div>')
              ),
              
