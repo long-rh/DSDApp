@@ -12,7 +12,7 @@ The factors of interest should be allocated to columns A-D. To enhance the power
 
 The result of your experiment should be recorded, by adding extra column in the downloaded table. In Figure 2, instead of actual experiment data, sample data is given by
 ```math
-y=3+2A+4B-C+3D-2AA-2AB+CC+\varepsilon, \ \varepsilon \sim N(0,\sigma=0.3). 
+y=3+2A+4B-C+3D-2AA-2AB+CC+\varepsilon, \ \varepsilon \sim N(0,\sigma=0.3) \tag{1}. 
 ```
 
 The table generated here is downloadable by clicking "Download." 
@@ -47,7 +47,7 @@ Figure 2. Finding active terms
 ### Step2
 By cliking "Build," we can make the model using the terms in  in "X1" and "X2.". To alter the model, you can manually select or deselect the terms in "X1" and "X2." "Modify" repeats the model selection with the terms selected in "X1"; that is, you can include the factors that were not selected automatically in Step1.
 
-We can check the built model in "Step2" pane. The bargraph in Figure 3 represents the coefficients of the model terms. The plot in the bottom shows the obtained and the predicted values. We can see that the model explains the data well because the points are on the straigt line. 
+Evaluation of the built model is possible in "Step2" pane. In "Model information" in Figure 3, we can see the coefficients of the model are almost the same as those in the original model(Eq.1). The bargraph also represents the coefficients of the model terms. The plot in the bottom shows the obtained and the predicted values. We can see that the model explains the data well because the points are on the straigt line as well as high adjusted R squared value (0.99). 
 
 <img src="image/Model2.png" width="80%">\
 Figure 3. Evaluating model
@@ -63,7 +63,7 @@ where $\boldsymbol{X}$ is the design matrix of DSD, $\alpha$ is the significance
 Figure 4. Prediction of output value
 
 # Optimize
-If you decide to use the model in the previous section, click "Resister model" to optimize the input parameters for minimum, maximum or target output value. The registered model shows up in the selector in Figure 6.
+If you decide to use the model built in the previous section, click "Resister model" to optimize the input parameters for minimum, maximum or target output value. The registered model shows up in the selector in Figure 6.
 "Set" buttun defines the purpose (minimize/maximize/target), and allowable lower or upper limit. For multiple output values, you need to register all the models and set their purposes of optimization individually.
 
 The limits set here defines the shape of desirability function $D_i$ by the following equations. Figure 5 is the example desirabitlity function for different optimization purposes.
@@ -94,7 +94,7 @@ D_i=\left\{
 ```
 
 <img src="image/desirability_function.png" width="80%">\
-Figure 5 Desirability functions for different optimizations; (a) minimization, (b) maximization, and (c) tuning (at $y_{target}$ = 2) with $y_{lower}$ = 1 and $y_{upper}$ = 3.
+Figure 5 Desirability functions for different optimizations; (a) minimization, (b) maximization, and (c) tuning at $y_{target}$ = 2 with $y_{lower}$ = 1 and $y_{upper}$ = 3.
 
 
 The otimization of the factor levels is performed by clicking "Maximize desirability."  For multi-objective optimization, the total desirability $D_t=\prod_{i}D_i$ is maximized. In the bottom pane in Figure 6, make sure that $D_i$ and $D_t$ are not zero; otherwise, optimization of output value(s) is not performed properly. The optimization is done by limited-memory quasi-Newton code for bound-constrained optimization (L-BFGS-B) (the defualt function “optim” in R language), and repeated ten times by changing the initial parameters.
