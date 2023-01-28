@@ -11,9 +11,9 @@ In Plan tab, you can create DSD table with the factors of 4-12, with the center 
 The factors of interest should be allocated to columns A-D. To enhance the power of detecting factor effects, use the last two columns E and F as so-callled Fake Factors, to which no actual factors are allocated; fake factors are used for analysis only. Your experiment should be done, changing the levels (low:-1, middle:0, high:1) of the factors follwing the DSD table. 
 
 The result of your experiment should be recorded, by adding extra column in the downloaded table. In Figure 2, instead of actual experiment data, sample data is given by
-$$
+```math
 y=3+2A+4B-C+3D-2AA-2AB+CC+\varepsilon, \ \varepsilon \sim N(0,\sigma=0.3). 
-$$
+```
 
 The table generated here is downloadable by clicking "Download." 
 You can find this DSD table and the sample data in "DSD.csv".
