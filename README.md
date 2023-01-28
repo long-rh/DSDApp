@@ -53,11 +53,11 @@ We can check the built model in "Step2" pane. The bargraph in Figure 3 represent
 Figure 3. Evaluating model
 
 ### Predict
-The prediction of the output value based on the built model is possible. The input vector x (or the factor levels) can be set to specified values, as can be seen in Figure 4. The prediction value $y_{x_0}$ at $\bm{x_0}=[1,A,B,C,D]$ and its prediction interval is calculated as
+The prediction of the output value based on the built model is possible. The input vector x (or the factor levels) can be set to specified values, as can be seen in Figure 4. The prediction value $y_{x_0}$ at $\boldsymble{x_0}=[1,A,B,C,D]$ and its prediction interval is calculated as
 ```math
-y_{x_0}\pm t_{\alpha/2, n-p}\sqrt{\sigma^2(1+\bm{x_0}(\bm{X}^t\bm{X})^{-1}\bm{x_0})},
+y_{x_0}\pm t_{\alpha/2, n-p}\sqrt{\sigma^2(1+\boldsymble{x_0}(\boldsymble{X}^t\boldsymble{X})^{-1}\boldsymble{x_0})},
 ```
-where $\bm{X}$ is the design matrix of DSD, $\alpha$ is the significance level, $n$ is the number of runs, and $p$ is the number of terms in the model (including the intercept term). 
+where $\boldsymble{X}$ is the design matrix of DSD, $\alpha$ is the significance level, $n$ is the number of runs, and $p$ is the number of terms in the model (including the intercept term). 
 
 <img src="image/predict.png" width="80%">\
 Figure 4. Prediction of output value
