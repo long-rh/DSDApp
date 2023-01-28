@@ -7,15 +7,10 @@ tags:
 authors:
   - name: Ryoichiro Hayasaka
     orcid: 0000-0003-1160-3846
-    equal-contrib: true
     affiliation: 1
   - name: Pablo Cayado
-    orcid: 0000-0003-1160-3846
-    equal-contrib: true
     affiliation: 2
   - name: Jens Hänisch
-    orcid: 0000-0003-1160-3846
-    equal-contrib: true
     affiliation: 1
 affiliations:
  - name: Karlsruhe Institute of Technology, Karlsruhe, Germany
