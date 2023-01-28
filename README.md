@@ -68,7 +68,8 @@ If you decide to use the model in the previous section, click "Resister model" t
 The limits set here defines the shape of desirability function $D_i$ by the following equations. Figure 5 is the example desirabitlity function for different optimization purposes.
 
 For minimizatin and maximization,
-$$ D_i=\Big[1+99\exp⁡{\Bigl(y-\frac{y_{allowable}+y_{target}}{2}\Big)
+$$
+D_i=\Big[1+99\exp⁡{\Bigl(y-\frac{y_{allowable}+y_{target}}{2}\Big)
 \Big(\frac{2p}{y_{allowable}-y_{target}}\Big)}\Bigr]^{-1},
 \\
 p = \left\{
