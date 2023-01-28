@@ -17,7 +17,7 @@ $$ y=3+2A+4B-C+3D-2AA-2AB+CC+\varepsilon,
 The table generated here is downloadable by clicking "Download." 
 You can find this DSD table and the sample data in "DSD.csv".
 
-![Planning DSD\label{fig:}](./image/Plan.png)
+<img src="image/Plan.png" width="80%">\
 Figure 1. Planning DSD
 
 # Model
@@ -27,7 +27,7 @@ In Model tab, we can find significant factors and make second-order models follo
 The first thing we should do is to upload the result file (DSD table and the result column). In the following part, "DSD.csv" is used for test.
 The uploaded file should be .txt or .csv. Make sure the file uploaded properly in "Table" pane.
 
-![Upload](./image/Upload.png)
+<img src="image/Upload.png" width="80%">\
 Figure 2. Upload experiment data
 
 ## Make Model
@@ -40,7 +40,7 @@ Second-order effects are selected from candidate terms consisting of active main
 
 Slected main effects and second-order effects appear in "X1" and "X2," respectively.
 
-![model1](./image/Model1.png)
+<img src="image/Model1.png" width="80%">\
 Figure 2. Finding active terms
 
 ### Step2
@@ -48,7 +48,7 @@ By cliking "Build," we can make the model using the terms in  in "X1" and "X2.".
 
 We can check the built model in "Step2" pane. The bargraph in Figure 3 represents the coefficients of the model terms. The plot in the bottom shows the obtained and the predicted values. We can see that the model explains the data well because the points are on the straigt line. 
 
-![model2](./image/Model2.png)
+<img src="image/Model2.png" width="80%">\
 Figure 3. Evaluating model
 
 ### Predict
@@ -57,7 +57,8 @@ $$
 y_{x_0}\pm t_{\alpha/2, n-p}\sqrt{\sigma^2(1+\bm{x_0}(\bm{X}^t\bm{X})^{-1}\bm{x_0})},
 $$
 where $\bm{X}$ is the design matrix of DSD, $\alpha$ is the significance level, $n$ is the number of runs, and $p$ is the number of terms in the model (including the intercept term). 
-![predict](./image/predict.png)
+
+<img src="image/predict.png" width="80%">\
 Figure 4. Prediction of output value
 
 # Optimize
@@ -90,11 +91,11 @@ D_i=\left\{
     \right.
 $$
 
-![desirability](./image/desirability_function.png)
+<img src="image/desirability_function.png" width="80%">\
 Figure 5 Desirability functions for different optimizations; (a) minimization, (b) maximization, and (c) tuning (at $y_{target}$ = 2) with $y_{lower}$ = 1 and $y_{upper}$ = 3.
 
 
 The otimization of the factor levels is performed by clicking "Maximize desirability."  For multi-objective optimization, the total desirability $D_t=\prod_{i}D_i$ is maximized. In the bottom pane in Figure 6, make sure that $D_i$ and $D_t$ are not zero; otherwise, optimization of output value(s) is not performed properly. The optimization is done by limited-memory quasi-Newton code for bound-constrained optimization (L-BFGS-B) (the defualt function “optim” in R language), and repeated ten times by changing the initial parameters.
 
-![optimize](./image/optimize.png)
+<img src="image/optimize.png" width="80%">\
 Figure 6. Optimization
