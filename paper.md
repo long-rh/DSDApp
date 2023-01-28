@@ -28,5 +28,6 @@ DSDApp, therefore, has been developed to provide an effortless way to employ DSD
 
 DSDApp can be used intuitively by clicking buttons, thereby, experimenters in any kinds of engineering and science can focus more on their projects of interest. The performance of DSDApp has been tested by using simulated data and actual experimental results prepared from different sources of literature[Hayasaka:2020][Rijkaert:2021].
 
-#Acknowledgement
+
+# Acknowledgement
 The initial experimental work for developing DSDApp, especially has been conducted at Karlsruhe Institute of Technology (Germany) during the author’s research visit within the program COLABS offered by Tohoku University (Japan). The authors thank the research members at The Institute for Technical Physics and Tohoku University for giving insight into this work.
