@@ -54,9 +54,9 @@ Figure 3. Evaluating model
 
 ### Predict
 The prediction of the output value based on the built model is possible. The input vector x (or the factor levels) can be set to specified values, as can be seen in Figure 4. The prediction value $y_{x_0}$ at $\bm{x_0}=[1,A,B,C,D]$ and its prediction interval is calculated as
-$$
+```math
 y_{x_0}\pm t_{\alpha/2, n-p}\sqrt{\sigma^2(1+\bm{x_0}(\bm{X}^t\bm{X})^{-1}\bm{x_0})},
-$$
+```
 where $\bm{X}$ is the design matrix of DSD, $\alpha$ is the significance level, $n$ is the number of runs, and $p$ is the number of terms in the model (including the intercept term). 
 
 <img src="image/predict.png" width="80%">\
@@ -69,7 +69,7 @@ If you decide to use the model in the previous section, click "Resister model" t
 The limits set here defines the shape of desirability function $D_i$ by the following equations. Figure 5 is the example desirabitlity function for different optimization purposes.
 
 For minimizatin and maximization,
-$$
+```math
 D_i=\Big[1+99\exp⁡{\Bigl(y-\frac{y_{allowable}+y_{target}}{2}\Big)
 \Big(\frac{2p}{y_{allowable}-y_{target}}\Big)}\Bigr]^{-1},
 \\
@@ -79,9 +79,9 @@ p = \left\{
 1 & (\rm{for}\ \rm{mazimizing})
 \end{array}
 \right.
-$$
+```
 For tuning to the target value,
-$$
+```math
 D_i=\left\{
     \begin{array}{ll}
     \exp\big[-\frac{(y-y_{target})^2}{2} \left(\frac{y_{target}-y_{lower}}{3}\right)^{-2}\big],
@@ -91,7 +91,7 @@ D_i=\left\{
     & (y\ge y_{target})
     \end{array}
     \right.
-$$
+```
 
 <img src="image/desirability_function.png" width="80%">\
 Figure 5 Desirability functions for different optimizations; (a) minimization, (b) maximization, and (c) tuning (at $y_{target}$ = 2) with $y_{lower}$ = 1 and $y_{upper}$ = 3.
