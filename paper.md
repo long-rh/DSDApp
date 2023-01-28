@@ -1,5 +1,5 @@
 ---
-title: DSDApp\: an open-access tool for Definitive Screening Design
+title: 'DSDApp: an open-access tool for Definitive Screening Design'
 tags:
   - design of experiment
   - definitive screening design
