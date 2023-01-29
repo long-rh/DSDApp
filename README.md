@@ -94,7 +94,7 @@ D_i=\left\{
 ```
 
 <img src="image/desirability_function.png" width="80%">\
-Figure 6 Desirability functions for different optimizations; (a) minimization, (b) maximization, and (c) tuning at $y_{target}$ = 2 with $y_{lower}$ = 1 and $y_{upper}$ = 3.
+Figure 6. Desirability functions for different optimizations; (a) minimization, (b) maximization, and (c) tuning at $y_{target}$ = 2 with $y_{lower}$ = 1 and $y_{upper}$ = 3.
 
 
 The otimization of the factor levels is performed by clicking "Maximize desirability."  For multi-objective optimization, the total desirability $D_t=\prod_{i}D_i$ is maximized. In the bottom pane in Figure 7, make sure that $D_i$ and $D_t$ are not zero; otherwise, optimization of output value(s) is not performed properly. The optimization is done by limited-memory quasi-Newton code for bound-constrained optimization (L-BFGS-B) (the defualt function “optim” in R language), and repeated ten times by changing the initial parameters.
