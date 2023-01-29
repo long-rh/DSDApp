@@ -42,31 +42,31 @@ Second-order effects are selected from candidate terms consisting of active main
 Slected main effects and second-order effects appear in "X1" and "X2," respectively.
 
 <img src="image/Model1.png" width="80%">\
-Figure 2. Finding active terms
+Figure 3. Finding active terms
 
 ### Step2
 By cliking "Build," we can make the model using the terms in  in "X1" and "X2.". To alter the model, you can manually select or deselect the terms in "X1" and "X2." "Modify" repeats the model selection with the terms selected in "X1"; that is, you can include the factors that were not selected automatically in Step1.
 
-Evaluation of the built model is possible in "Step2" pane. In "Model information" in Figure 3, we can see the coefficients of the model are almost the same as those in the original model(Eq.1). The bargraph also represents the coefficients of the model terms. The plot in the bottom shows the obtained and the predicted values. We can see that the model explains the data well because the points are on the straigt line as well as high adjusted R squared value (0.99). 
+Evaluation of the built model is possible in "Step2" pane. In "Model information" in Figure 4, we can see the coefficients of the model are almost the same as those in the original model(Eq.1). The bargraph also represents the coefficients of the model terms. The plot in the bottom shows the obtained and the predicted values. We can see that the model explains the data well because the points are on the straigt line as well as high adjusted R squared value (0.99). 
 
 <img src="image/Model2.png" width="80%">\
-Figure 3. Evaluating model
+Figure 4. Evaluating model
 
 ### Predict
-The prediction of the output value based on the built model is possible. The input vector x (or the factor levels) can be set to specified values, as can be seen in Figure 4. The prediction value $y_{x_0}$ at $\boldsymbol{x_0}=[1,A,B,C,D]$ and its prediction interval is calculated as
+The prediction of the output value based on the built model is possible. The input vector x (or the factor levels) can be set to specified values, as can be seen in Figure 5. The prediction value $y_{x_0}$ at $\boldsymbol{x_0}=[1,A,B,C,D]$ and its prediction interval is calculated as
 ```math
 y_{x_0}\pm t_{\alpha/2, n-p}\sqrt{\sigma^2(1+\boldsymbol{x_0}(\boldsymbol{X}^t\boldsymbol{X})^{-1}\boldsymbol{x_0})},
 ```
 where $\boldsymbol{X}$ is the design matrix of DSD, $\alpha$ is the significance level, $n$ is the number of runs, and $p$ is the number of terms in the model (including the intercept term). 
 
 <img src="image/predict.png" width="80%">\
-Figure 4. Prediction of output value
+Figure 5. Prediction of output value
 
 # Optimize
-If you decide to use the model built in the previous section, click "Resister model" to optimize the input parameters for minimum, maximum or target output value. The registered model shows up in the selector in Figure 6.
+If you decide to use the model built in the previous section, click "Resister model" to optimize the input parameters for minimum, maximum or target output value. The registered model shows up in the selector in Figure 7.
 "Set" buttun defines the purpose (minimize/maximize/target), and allowable lower or upper limit. For multiple output values, you need to register all the models and set their purposes of optimization individually.
 
-The limits set here defines the shape of desirability function $D_i$ by the following equations. Figure 5 is the example desirabitlity function for different optimization purposes.
+The limits set here defines the shape of desirability function $D_i$ by the following equations. Figure 6 is the example desirabitlity function for different optimization purposes.
 
 For minimizatin and maximization,
 ```math
@@ -94,10 +94,10 @@ D_i=\left\{
 ```
 
 <img src="image/desirability_function.png" width="80%">\
-Figure 5 Desirability functions for different optimizations; (a) minimization, (b) maximization, and (c) tuning at $y_{target}$ = 2 with $y_{lower}$ = 1 and $y_{upper}$ = 3.
+Figure 6 Desirability functions for different optimizations; (a) minimization, (b) maximization, and (c) tuning at $y_{target}$ = 2 with $y_{lower}$ = 1 and $y_{upper}$ = 3.
 
 
-The otimization of the factor levels is performed by clicking "Maximize desirability."  For multi-objective optimization, the total desirability $D_t=\prod_{i}D_i$ is maximized. In the bottom pane in Figure 6, make sure that $D_i$ and $D_t$ are not zero; otherwise, optimization of output value(s) is not performed properly. The optimization is done by limited-memory quasi-Newton code for bound-constrained optimization (L-BFGS-B) (the defualt function “optim” in R language), and repeated ten times by changing the initial parameters.
+The otimization of the factor levels is performed by clicking "Maximize desirability."  For multi-objective optimization, the total desirability $D_t=\prod_{i}D_i$ is maximized. In the bottom pane in Figure 7, make sure that $D_i$ and $D_t$ are not zero; otherwise, optimization of output value(s) is not performed properly. The optimization is done by limited-memory quasi-Newton code for bound-constrained optimization (L-BFGS-B) (the defualt function “optim” in R language), and repeated ten times by changing the initial parameters.
 
 <img src="image/optimize.png" width="80%">\
-Figure 6. Optimization
+Figure 7. Optimization
