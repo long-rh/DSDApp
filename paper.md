@@ -1,5 +1,5 @@
 ---
-title: DSDApp: an open-access tool for Definitive Screening Design
+title: 'DSDApp: an open-access tool for Definitive Screening Design'
 tags:
   - design of experiment
   - definitive screening design
@@ -7,19 +7,16 @@ tags:
 authors:
   - name: Ryoichiro Hayasaka
     orcid: 0000-0003-1160-3846
-    equal-contrib: true
-  - name: Pablo Cayado,
+  - name: Pablo Cayado
     orcid: 0000-0003-3703-6122
-    equal-contrib: true
     affiliation: 1
-
 affiliations:
-- name:University of Geneva, Department of Quantum Matter Physics (DQMP), Quai Ernest-Ansermet 24, 1211 Geneva, Switzerland 
+ - name: University of Geneva, Department of Quantum Matter Physics, Geneva, Switzerland
    index: 1
 date: 2 February 2023
 bibliography: paper.bib
-
 ---
+
 
 # Summary
 Definitive Screening Design (DSD) is a novel and efficient design of experiment (DOE), developed by Jones and Nachtsheim and reported in 2011 [Jones:2011]. DSD enables experimenters of different fields to investigate many parameters (factors) of their system by performing only 2k+α trials (k: the number of the factors, α: typically, 1 – 5 extra trials) and combining different experimental conditions. By using DSD, experimenters can create second-order models to explain the output value, and optimize the magnitude (level) of the factors based on the models. Figure 1 shows an example of six-factor DSD and test experiment data. An experimenter can evaluate dominant factors among the six factors by conducting only 17 runs, and optimize the levels of the factors based on the second-order model. Due to this efficiency, many researchers and engineers prefer to use DSD, especially in fields where numerous factors are involved such as material sciences. However, the design and analysis of DSD usually require commercial software (e.g., JMP, Design-Expert, Minitab) or programming (e.g., R or Python), which hinders the widespread of DSD.
