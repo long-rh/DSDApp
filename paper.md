@@ -38,4 +38,4 @@ DSDApp can be used intuitively by clicking buttons and, therefore, experimenters
 
 
 # Acknowledgement
-The initial experimental work for developing DSDApp, especially has been conducted at Karlsruhe Institute of Technology (Germany) during the author’s research visit within the program COLABS offered by Tohoku University (Japan). The authors thank Dr. Jens Hänisch and the research members at The Institute for Technical Physics and Tohoku University for giving insight into this work.
+The initial experimental work for developing DSDApp, especially has been conducted at Karlsruhe Institute of Technology (Germany) during the author’s research visit within the program COLABS offered by Tohoku University (Japan). The authors thank the research members at The Institute for Technical Physics and Tohoku University for giving insight into this work.
