@@ -7,13 +7,18 @@ tags:
 authors:
   - name: Ryoichiro Hayasaka
     orcid: 0000-0003-1160-3846
+    affiliation: 1
   - name: Pablo Cayado
     orcid: 0000-0003-3703-6122
+    affiliation: 2
+  - name: Jens Hänisch
     affiliation: 1
 affiliations:
- - name: University of Geneva, Department of Quantum Matter Physics, Geneva, Switzerland
+ - name: Karlsruhe Institute of Technology, Karlsruhe, Germany
    index: 1
-date: 2 February 2023
+ - name: University of Geneva, Department of Quantum Matter Physics, Geneva, Switzerland
+   index: 2
+date: 14 February 2023
 bibliography: paper.bib
 ---
 
