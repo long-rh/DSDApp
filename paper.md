@@ -8,12 +8,12 @@ authors:
   - name: Ryoichiro Hayasaka
     orcid: 0000-0003-1160-3846
     affiliation: 1
-  - name: Pablo Cayado
-    orcid: 0000-0003-3703-6122
-    affiliation: 2
   - name: Jens Hänisch
     orcid: 0000-0003-2757-236X
     affiliation: 1
+  - name: Pablo Cayado
+    orcid: 0000-0003-3703-6122
+    affiliation: 2  
 affiliations:
  - name: Karlsruhe Institute of Technology, Karlsruhe, Germany
    index: 1
