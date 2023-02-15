@@ -51,7 +51,7 @@ By clicking on "Build," you can create the model using the terms that appear in 
 Evaluation of the model is possible in the "Step2" panel. In "Model information" in Figure 4, you can see that the coefficients of the model are almost the same as those in the original model (Eq.1). The bar graph also represents the coefficients of the model terms. The plot at the bottom shows the obtained and predicted values. you can see that the model describes the data well because the points are on a straight line with a high adjusted R squared value. 
 
 
-<img src="image/Model2.png" width="80%">\
+<img src="image/Model2.png">\
 Figure 4. Evaluating model
 
 ### Predict
