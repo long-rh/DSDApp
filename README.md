@@ -6,7 +6,7 @@ The app is open-accessed at https://my-first-dsd.shinyapps.io/DSDApp_ver2/.
 To use it locally, download all the files in this repositry and run server.R on Rstudio.
 
 # Plan
-In the Plan tab, you can create a DSD table with 4-12 factors, with 1-4 center run(s). Figure 1 shows the example of six-factor (A-F) DSD. 
+In the Plan tab, you can create a DSD table with 4-12 factors, with 1-4 center run(s). Figure 1 shows an example a six-factor (A-F) DSD. 
 
 The factors of interest should be allocated in columns A-D. To enhance the power of detecting the effects of a factor, use the last two columns E and F for the so-called Fake Factors, to which no real factors are allocated; fake factors are only used for analysis. Your experiment should be done by changing the levels (low:-1, middle:0, high:1) of the factors following the DSD table. 
 
@@ -22,10 +22,10 @@ You can find this DSD table and the sample data in "DSD.csv".
 Figure 1. Planning DSD
 
 # Model
-In the Model tab, we can find significant factors and make second-order models following two steps.  
+In the Model tab, you can find significant factors and make second-order models following two steps.  
 
 ## Upload Experiment Data
-The first thing we should do is to upload the result file (DSD table and the result column). In the following, "DSD.csv" is used for the test.
+The first thing you should do is to upload the result file (DSD table and the result column). In the following, "DSD.csv" is used for the test.
 The uploaded file should be .txt or .csv. Make sure that the file is properly uploaded in the "Table" panel.
 
 <img src="image/Upload.png" width="80%">\
@@ -33,7 +33,7 @@ Figure 2. Upload experiment data
 
 ## Make Model
 ### Step1
-To make models based on the uploaded data, Y (output), X (input), and fake factors must be specified. For our test data, the output is Y, the inputs are A, B, C, and D, and the fake factors are E and F, as we can see in the left panel in Figure 3.
+To make models based on the uploaded data, Y (output), X (input), and fake factors must be specified. For our test data, the output is Y, the inputs are A, B, C, and D, and the fake factors are E and F, as you can see in the left panel in Figure 3.
 
 Click "Find active terms" to start the calculation. Active main factors (first-order effects) are selected when they exceed the red line of the graph.
 
@@ -46,9 +46,9 @@ Selected main effects and second-order effects appear in "X1" and "X2," respecti
 Figure 3. Finding active terms
 
 ### Step2
-By clicking on "Build," we can create the model using the terms that appear in the "X1" and "X2" inputs. The model can be modified by selecting or disallowing manually the terms in "X1" and "X2" "Modify" repeats the model selection with the terms selected in "X1"; that is, you can include the factors that were not selected automatically in Step1.
+By clicking on "Build," you can create the model using the terms that appear in the "X1" and "X2" inputs. The model can be modified by selecting or disallowing manually the terms in "X1" and "X2" "Modify" repeats the model selection with the terms selected in "X1"; that is, you can include the factors that were not selected automatically in Step1.
 
-Evaluation of the model is possible in the "Step2" panel. In "Model information" in Figure 4, we can see that the coefficients of the model are almost the same as those in the original model (Eq.1). The bar graph also represents the coefficients of the model terms. The plot at the bottom shows the obtained and predicted values. We can see that the model describes the data well because the points are on a straight line with a high adjusted R squared value. 
+Evaluation of the model is possible in the "Step2" panel. In "Model information" in Figure 4, you can see that the coefficients of the model are almost the same as those in the original model (Eq.1). The bar graph also represents the coefficients of the model terms. The plot at the bottom shows the obtained and predicted values. you can see that the model describes the data well because the points are on a straight line with a high adjusted R squared value. 
 
 
 <img src="image/Model2.png" width="80%">\
@@ -65,10 +65,14 @@ where $\boldsymbol{X}$ is the design matrix of DSD, $\alpha$ is the significance
 Figure 5. Prediction of output value
 
 # Optimize
-If you decide to use the model to optimize the input parameters for minimum, maximum, or target output value click on "Resister model". The registered model shows up in the selector in Figure 7.
+If you decide to use the model to optimize the input parameters for minimum, maximum, or target output value click on "Register model". The registered model shows up in the selector in Figure 6.
+
+<img src="image/optimize.png" width="80%">\
+Figure 6. Optimization
+
 The "Set" button defines the purpose (minimize/maximize/target), and lower or upper limits. For multiple output values, you need to register all the models and set their purposes of optimization individually.
 
-The limits set here define the shape of the desirability function $D_i$ by the following equations. Figure 6 shows examples of the desirability function for different optimization purposes.
+The limits set here define the shape of the desirability function $D_i$ by the following equations. Figure 7 shows examples of the desirability function for different optimization purposes.
 
 For minimizatin and maximization,
 ```math
@@ -96,10 +100,7 @@ D_i=\left\{
 ```
 
 <img src="image/desirability_function.png" width="80%">\
-Figure 6. Desirability functions for different optimizations; (a) minimization, (b) maximization, and (c) tuning at $y_{target}$ = 2 with $y_{lower}$ = 1 and $y_{upper}$ = 3.
+Figure 7. Desirability functions for different optimizations; (a) minimization, (b) maximization, and (c) tuning at $y_{target}$ = 2 with $y_{lower}$ = 1 and $y_{upper}$ = 3.
 
 
-The optimization of the factor levels is performed by clicking "Maximize desirability."  For multi-objective optimization, the total desirability $D_t=\prod_{i}D_i$ is maximized. In the bottom pane in Figure 7, make sure that $D_i$ and $D_t$ are not zero; otherwise, optimization of output value(s) is not performed properly. The optimization is done by limited-memory quasi-Newton code for bound-constrained optimization (L-BFGS-B; the default function of “optim” in R language) and repeated ten times by changing the initial parameters.
-
-<img src="image/optimize.png" width="80%">\
-Figure 7. Optimization
+The optimization of the factor levels is performed by clicking "Maximize desirability."  For multi-objective optimization, the total desirability $D_t=\prod_{i}D_i$ is maximized. In the bottom pane in Figure 6, make sure that $D_i$ and $D_t$ are not zero; otherwise, optimization of output value(s) is not performed properly. The optimization is done by limited-memory quasi-Newton code for bound-constrained optimization (L-BFGS-B; the default function of “optim” in R language) and repeated ten times by changing the initial parameters.
