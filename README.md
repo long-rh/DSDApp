@@ -33,7 +33,7 @@ Figure 2. Upload experiment data
 
 ## Make Model
 ### Step1
-To make models based on the uploaded data, Y (output), X (input), and fake factors must be specified. For our test data, the output is Y, the inputs are A, B, C, and D, and the fake factors are E and F, as you can see in the left panel in Figure 3.
+To make models based on the uploaded data, Y (output), X (input), and fake factors must be specified. For the test data, the output is Y, the inputs are A, B, C, and D, and the fake factors are E and F, as shown in the left panel in Figure 3.
 
 Click "Find active terms" to start the calculation. Active main factors (first-order effects) are selected when they exceed the red line of the graph.
 
@@ -46,9 +46,9 @@ Selected main effects and second-order effects appear in "X1" and "X2," respecti
 Figure 3. Finding active terms
 
 ### Step2
-By clicking on "Build," you can create the model using the terms that appear in the "X1" and "X2" inputs. The model can be modified by selecting or disallowing manually the terms in "X1" and "X2" "Modify" repeats the model selection with the terms selected in "X1"; that is, you can include the factors that were not selected automatically in Step1.
+By clicking on "Build," it is possible to create the model using the terms that appear in the "X1" and "X2" inputs. The model can be modified by selecting or disallowing manually the terms in "X1" and "X2" "Modify" repeats the model selection with the terms selected in "X1"; that is, you can include the factors that were not selected automatically in Step1.
 
-Evaluation of the model is possible in the "Step2" panel. In "Model information" in Figure 4, you can see that the coefficients of the model are almost the same as those in the original model (Eq.1). The bar graph also represents the coefficients of the model terms. The plot at the bottom shows the obtained and predicted values. you can see that the model describes the data well because the points are on a straight line with a high adjusted R squared value. 
+Evaluation of the model is possible in the "Step2" panel. In "Model information" in Figure 4, it is observed that the coefficients of the model are almost the same as those in the original model (Eq.1). The bar graph also represents the coefficients of the model terms. The plot in the bottom shows the obtained and predicted values. It is clear that the model describes the data well because the points are on a straight line with a high adjusted R squared value. 
 
 
 <img src="image/Model2.png">\
