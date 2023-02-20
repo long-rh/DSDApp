@@ -8,6 +8,7 @@ authors:
   - name: Ryoichiro Hayasaka
     orcid: 0000-0003-1160-3846
     affiliation: 1
+    corresponding: true
   - name: Jens Hänisch
     orcid: 0000-0003-2757-236X
     affiliation: 1
@@ -19,6 +20,7 @@ affiliations:
    index: 1
  - name: University of Geneva, Department of Quantum Matter Physics, Geneva, Switzerland
    index: 2
+   corresponding: true
 date: 14 February 2023
 bibliography: paper.bib
 ---
