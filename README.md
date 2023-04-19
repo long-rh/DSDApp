@@ -6,50 +6,50 @@ The app is open-accessed at https://my-first-dsd.shinyapps.io/DSDApp_ver2/.
 To use it locally, download all the files in this repositry and run server.R on Rstudio.
 
 # Plan
-In the Plan tab, you can create a DSD table with 4-12 factors, with 1-4 center run(s). Figure 1 shows an example a six-factor (A-F) DSD. 
+In the Plan tab, you can create a Definitive Screening Design (DSD) table with 4-12 factors, with 1-4 center run(s). A DSD table is an experiment design table used to identify the significant factors that affect a response variable. Figure 1 shows an example of a six-factor (A-F) DSD.
 
-The factors of interest should be allocated in columns A-D. To enhance the power of detecting the effects of a factor, use the last two columns E and F for the so-called Fake Factors, to which no real factors are allocated; fake factors are only used for analysis. Your experiment should be done by changing the levels (low:-1, middle:0, high:1) of the factors following the DSD table. 
+The factors of interest should be allocated in columns A-D. Factors are the variables you manipulate in your experiment, such as temperature or pressure. To enhance the power of detecting the effects of a factor, use the last two columns E and F for the so-called Fake Factors, to which no real factors are allocated. Fake factors are only used for analysis and help identify potential interactions or model deficiencies.
 
-The result of your experiment should be recorded and added in an extra column in the downloaded table. In Figure 2, instead of actual experiment data, sample data is given by
+
+Your experiment should be done by changing the levels (low: -1, middle: 0, high: 1) of the factors following the DSD table. These levels represent the different settings for each factor, allowing you to test their effects on the response variable. 
+
+The result of your experiment should be recorded and added in an extra column in the downloaded table. In Figure 2, instead of actual experiment data, sample data is given as an example. The data is produced by
 ```math
 y=3+2A+4B-C+3D-2AA-2AB+CC+\varepsilon, \ \varepsilon \sim N(0,\sigma=0.3) \tag{1}. 
 ```
 
-The table generated in this step can be downloaded by clicking on "Download." 
-You can find this DSD table and the sample data in "DSD.csv".
+The table generated in this step can be downloaded by clicking on "Download." You can find this DSD table and the sample data in "DSD.csv". This file can be opened in any spreadsheet software, allowing you to analyze your data and draw conclusions from the experiment.
+
 
 <img src="image/Plan.png" width="80%">\
 Figure 1. Planning DSD
 
 # Model
-In the Model tab, you can find significant factors and make second-order models following two steps.  
+In the Model tab, you can identify important factors and create second-order models in two simple steps.
 
 ## Upload Experiment Data
-The first thing you should do is to upload the result file (DSD table and the result column). In the following, "DSD.csv" is used for the test.
-The uploaded file should be .txt or .csv. Make sure that the file is properly uploaded in the "Table" panel.
+First, upload the results file, which includes the DSD table and the result column. For our example, we'll use "DSD.csv". Make sure the file is either a .txt or .csv format and that it appears correctly in the "Table" panel.
 
 <img src="image/Upload.png" width="80%">\
 Figure 2. Upload experiment data
 
 ## Make Model
 ### Step1
-To make models based on the uploaded data, Y (output), X (input), and fake factors must be specified. For the test data, the output is Y, the inputs are A, B, C, and D, and the fake factors are E and F, as shown in the left panel in Figure 3.
+To create models based on the uploaded data, you need to specify the output (Y), inputs (X), and fake factors. In our example, the output is Y, the inputs are A, B, C, and D, and the fake factors are E and F.
 
-Click "Find active terms" to start the calculation. Active main factors (first-order effects) are selected when they exceed the red line of the graph.
+Click "Find active terms" to begin the calculation. The software will select the most important factors (first-order effects) that go beyond the red line in the graph.
 
-Second-order effects are selected from candidate terms consisting of active main factors. For example, when A and B are active main factors, the candidates include AA, AB, and BB. These second-order terms are included in the model one by one through forward stepwise method, and the best model is determined on minimum Akaike information criteria.
+Next, the software will choose second-order effects from combinations of the important factors. It will add these effects to the model one by one, using a forward stepwise method, to find the best model based on the minimum Akaike information criteria.
 
-Selected main effects and second-order effects appear in "X1" and "X2," respectively.
-
+The selected main effects and second-order effects will show up in "X1" and "X2," respectively.
 
 <img src="image/Model1.png" width="80%">\
 Figure 3. Finding active terms
 
 ### Step2
-By clicking on "Build," it is possible to create the model using the terms that appear in the "X1" and "X2" inputs. The model can be modified by selecting or disallowing manually the terms in "X1" and "X2" "Modify" repeats the model selection with the terms selected in "X1"; that is, you can include the factors that were not selected automatically in Step1.
+Click "Build" to create the model using the terms listed in "X1" and "X2." You can modify the model by manually selecting or deselecting terms in "X1" and "X2." By clicking "Modify," you can include factors that weren't automatically selected in Step 1.
 
-Evaluation of the model is possible in the "Step2" panel. In "Model information" in Figure 4, it is observed that the coefficients of the model are almost the same as those in the original model (Eq.1). The bar graph also represents the coefficients of the model terms. The plot in the bottom shows the obtained and predicted values. It is clear that the model describes the data well because the points are on a straight line with a high adjusted R squared value. 
-
+You can evaluate the model in the "Step 2" panel. The "Model information" section in Figure 4 shows that the model's coefficients are similar to those in the original model (Eq.1). The bar graph displays the model term coefficients, while the plot at the bottom compares the actual and predicted values. If the points are on a straight line with a high adjusted R squared value, it means the model describes the data well.
 
 <img src="image/Model2.png">\
 Figure 4. Evaluating model
