@@ -52,4 +52,3 @@ add_interaction <- function(df, only_additional=FALSE){
     return(df)
   }
 }
-add_quadratic(a)

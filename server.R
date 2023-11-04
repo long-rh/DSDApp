@@ -1,6 +1,6 @@
 library(shiny)
 library(daewr)
-library(MuMIn)#AICc
+#library(MuMIn)#AICc
 source("add_model_terms.R", local = TRUE)
 source("expression.R", local = TRUE)
 source("fn.R", local = TRUE)
@@ -18,9 +18,8 @@ shinyServer(function(input, output, session) {
   })
   
   DSD <- reactive({
-    number_of_2_level_factors <- 0#categoricalに未対応
+    number_of_2_level_factors <- 0#categoricalに未対
     #Not including categorical factors
-    
     if ((number_of_2_level_factors==0)) {
       if (input$number_of_factors%%2==0) {
         design <- DefScreen(input$number_of_factors, c=0)
@@ -105,7 +104,7 @@ shinyServer(function(input, output, session) {
                       header = TRUE,
                       sep = input$sep)
         updateSelectInput(session, "selectY", label = "Y", choices = colnames(d))
-        #saved_model <<- list() fileを更新してもモデルを更新しない
+        #saved_model <<- list() fileを更新してもモルを更新しな
         
       },
       error = function(e) {
@@ -204,6 +203,7 @@ shinyServer(function(input, output, session) {
   
   
   #Regression for all the main effects
+  observeEvent(input$Find_active_terms, showTab("tabset", target = "Step1", select = TRUE))
   regression <- eventReactive(input$Find_active_terms, {
     #X <- X()[!is.na(Y()),]
     #Y <- Y()[!is.na(Y())]
@@ -266,7 +266,7 @@ shinyServer(function(input, output, session) {
       sf <- 0
     }
     
-    if (nc()==1&mf<1) {#この場合だけ誤差が計算できない
+    if (nc()==1&mf<1) {#こ場合だけ誤差が計算できな
       return(cat("Std. estimate error"))
     }
     
@@ -305,7 +305,7 @@ shinyServer(function(input, output, session) {
     X <- X()[!is.na(Y()),]
     Y <- Y()[!is.na(Y())]
     
-    #Fake factorが無い場合
+    #Fake factorが無場
     if ((isolate(nc())==1&(length(isolate(input$selectXF))==0)) | nrow(df())!=nrow(d)) {
       second_order_candidates <- selectX2_all(X_resevoir = add_quadratic(X), Y)
       s <- second_order_candidates
@@ -340,7 +340,7 @@ shinyServer(function(input, output, session) {
         sf <- 0
       }
       
-      if (nc()==1&mf<1) {#この場合だけ誤差が計算できない
+      if (nc()==1&mf<1) {#こ場合だけ誤差が計算できな
         return(cat("Std. estimate error"))
       }
       
@@ -350,9 +350,9 @@ shinyServer(function(input, output, session) {
       t <- qt(0.8, ve)
       #############################################################
       if (se!=0) {
-        X_main <- X[abs(result1$coefficients[-1]/se)>t]#有効な主効果
+        X_main <- X[abs(result1$coefficients[-1]/se)>t]#valid main effect
 
-        if ( length(X_main)==0 |nrow(df())!=nrow(d) ) {#有効な主効果が無い場合は、全ての2次項でfoward-stepwise
+        if ( length(X_main)==0 |nrow(df())!=nrow(d) ) {#
             second_order_candidates <- selectX2_all(X_resevoir = add_quadratic(X), Y)
             s <- second_order_candidates
             min_ind <- which(unlist(s[["AICc"]]==min(unlist(s[["AICc"]]))))
@@ -369,7 +369,7 @@ shinyServer(function(input, output, session) {
             return(second_order_candidates)
         }
         
-      }else if (se==0) {# se=0, つまりモデルが完全に数式で表せるとき(領域指定したいとき)
+      }else if (se==0) {# se=0, つまりモルが完に数式で表せると(領域定したいと)
         X_main <- X[abs(result1$coefficients[-1])>1e-10]
         updateSelectInput(session, "selectX1", choices = colnames(X), selected = colnames(X_main))
         updateSelectInput(session, "selectX2", 
@@ -433,7 +433,7 @@ shinyServer(function(input, output, session) {
     if (input$Modify_model) {
       s <- regression_modified()
     }
-    cat("AICc","\t","\t", "temrs", "\n")
+    cat("AICc","\t","\t", "terms", "\n")
     for (i in 1:length(s[["params"]])) {
       cat(unlist(s[["AICc"]][i]),"\t")
       cat(unlist(s[["params"]][i]), "\n")
@@ -443,6 +443,7 @@ shinyServer(function(input, output, session) {
 
   
   #Combined model
+  observeEvent(input$Modify_model, showTab("tabset", target = "Step1", select = TRUE))
   regression_modified <- eventReactive(input$Modify_model, {
     if (isolate(Y())!="NotSpecifiedY"){
       if(length(input$selectX)>3 & 
@@ -481,7 +482,7 @@ shinyServer(function(input, output, session) {
     }
   })
   
-  
+  observeEvent(input$Build_combined_model, showTab("tabset", target = "Step2", select = TRUE))
   regression_combined <- eventReactive(input$Build_combined_model, {
     if (isolate(Y())!="NotSpecifiedY"){
       if(length(input$selectX)>3 & 
@@ -500,6 +501,9 @@ shinyServer(function(input, output, session) {
   output$summary_regression_combined <- renderPrint({
     input$Build_combined_model
     if (is.list(regression_combined())) {
+        #model
+        cat("Formula: ", expression(regression_combined()), "\n")
+        cat("---------------------------------------------------------\n")
         print(summary(regression_combined())$coefficients)
         cat("---------------------------------------------------------\n")
         cat("Residual standard error: ", summary(regression_combined())$sigma, "on ", summary(regression_combined())$df[2], "degree of freedom\n")
@@ -582,28 +586,27 @@ shinyServer(function(input, output, session) {
   
   ###################################################################################
   #optimization
-  #saved_modelには重複ありのモデルが格納されるが,model_selectには重複なしのsaved_modelが反映されるため
-  #uni_models <- saved_model[input$model_select]としてすべての重複の無いモデルに対して最適化を実行する
+  #saved_modelには重ありのモルが納される,model_selectには重なしsaved_modelが反されるた
+  #uni_models <- saved_model[input$model_select]としてすべての重の無モルに対して最適化を実行す
   
-  #Registerがクリックされたら以下を実行
+  #Registerがクリクされたら以下を実
   registered_models <- observeEvent(input$Register_model, {
     #saved_modelを更新する
     if (is.list(regression_combined())) {
       model <- regression_combined()
-      saved_model[[length(saved_model)+1]] <<- c(model, paste(input$selectX1, collapse = ","), paste(input$selectX2, collapse = ","))#listの最後に新しいモデルと有効な主効果を追加する
+      saved_model[[length(saved_model)+1]] <<- c(model, paste(input$selectX1, collapse = ","), paste(input$selectX2, collapse = ","))#listの最後に新しいモルと有効な主効果を追する
       names(saved_model)[[length(saved_model)]] <<- expression(model)#listの名前を式にする
       #model_selectの選択肢を更新
-      updateSelectInput(session, "model_select", choices = names(saved_model))#selectinputは勝手に重複なしリストにするっぽい
+      updateSelectInput(session, "model_select", choices = names(saved_model))#selectinputは勝手に重なしリストにするっぽ
       
     }
   })
-  
-  
+
   
   update_model <- observeEvent(input$model_select, {
     uni_models <- saved_model[input$model_select]
     #Yの更新
-    updateSelectInput(session, "opt_Y", choices = names(uni_models))#個別のモデル
+    updateSelectInput(session, "opt_Y", choices = names(uni_models))#個別のモル
     opt_Y_config <<- list()
     if (length(names(uni_models))>0) {
       for (i in 1:length(names(uni_models))) {
@@ -619,7 +622,7 @@ shinyServer(function(input, output, session) {
       }
       X_list <- unique(X_list)
       updateSelectInput(session, "opt_X", choices = X_list)
-      #X_listをもとにopt_X_configを作成する
+      #X_listをもとにopt_X_configを作す
       for (i in 1:length(X_list)) {
         opt_X_config[[X_list[i]]] <<- c(-1, 1)
       }
@@ -628,10 +631,10 @@ shinyServer(function(input, output, session) {
   })
   
   set_config <- observeEvent(input$Set, {
-    #設定ボタンを押したらopt_X_config, opt_Y_configに最適化の情報を格納する
-    if (nchar(input$opt_Y)>0) {#input$opt_Yが空でない場合に実行
+    #設定タンを押したらopt_X_config, opt_Y_configに最適化報を納す
+    if (nchar(input$opt_Y)>0) {#input$opt_Yが空でな場合に実
       opt_Y_config[[input$opt_Y]] <<- c(input$purpose, input$Lower_Y, input$Target_Y, input$Upper_Y, input$Weight)
-    }else{#別の処理とする
+    }else{#別の処とする
       opt_Y_config <<- list()
     }
   })
@@ -690,7 +693,7 @@ shinyServer(function(input, output, session) {
         }
       }
       if (return_val) {
-        return(list(y, d))#predicted valueとindividual desirabilityを出力
+        return(list(y, d))#predicted valueとindividual desirabilityを
       }
       return(-prod(d)^(1/length(d)))
     }
@@ -709,7 +712,7 @@ shinyServer(function(input, output, session) {
     for (i in 1:N) {
       para_list <- runif(length(buf_par), min = -1, max = 1)
       names(para_list) <- names(opt_X_config)
-      #全体満足度の最大化(-全体満足度の最小化)
+      #全体満足度の最大(-全体満足度の最小化)
       opt <- optim(para_list, Total_desirability, method = "L-BFGS-B", lower = -1, upper = 1)
       if (opt$value<buf) {
         buf <- opt$value
@@ -743,7 +746,7 @@ shinyServer(function(input, output, session) {
     
     
     ###################################################################
-    #show_BG_processにチェックが入っていれば表示
+    #show_BG_processにチェクがってれ表示
     if(input$show_BG_process){
       cat("\n")
       cat("\n")
@@ -780,7 +783,7 @@ shinyServer(function(input, output, session) {
     if ((length(opt_Y_config)>0)& (length(input$model_select)>0)){
       
       ###################################################
-      #opt_Y_configに矛盾があればここでエラーを返すようにする
+      #opt_Y_configに矛盾があれここでエラーを返すようにする
       for (i in 1:length(opt_Y_config)) {
         p <- opt_Y_config[[i]]
         q <- as.numeric(p[2:4])#1:lower, 2:target, 3:upper
@@ -792,7 +795,7 @@ shinyServer(function(input, output, session) {
             return(cat("Target value must be smaller than upper value!"))
           }
         }
-        #最大化
+        #最大
         if (p[1]=="maximize") {
           if (q[2]<=q[1]) {
             cat("Configuration error in ", names(opt_Y_config)[i], "\n")

@@ -76,16 +76,20 @@ shinyUI(
                             h4("Step2"),
                             selectInput("selectX1", "X1", multiple = TRUE, choices = ""),
                             selectInput("selectX2", "X2", multiple = TRUE, choices = ""),
-                            actionButton("Build_combined_model", "Build"),
-                            actionButton("Modify_model", "Modify"),
+                            actionButton("Modify_model", "Regenerate X2"),
+                            p(""),
+                            actionButton("Build_combined_model", "Build model"),
                             hr(),
-                            actionButton("Register_model", "Register model")
+                            actionButton("Register_model", "Register model"),
+                            p("Registered models appear in Optimize tab.")
                           )
                           
                         ),
                         column(1),
                         column(8,
-                          tabsetPanel(type="tabs",
+                          tabsetPanel(
+                                      id="tabset",
+                                      type="tabs",
                                       tabPanel("Table",
                                                verbatimTextOutput("contents")),
                                       tabPanel("Plot",
@@ -141,7 +145,7 @@ shinyUI(
                         )
                       ),
                       HTML('<div class="container">
-                              <footer> <p>Copywrite 2021 Ryoichiro Hayasaka</p></footer>
+                              <footer> <p>Copyright 2021 Ryoichiro Hayasaka</p></footer>
                            </div>')
              ),
              tabPanel(
@@ -207,8 +211,12 @@ shinyUI(
                  )
                ),
                HTML('<div class="container">
-                    <footer> <p>Copywrite 2021 Ryoichiro Hayasaka</p></footer>
+                    <footer> <p>Copyright 2021 Ryoichiro Hayasaka</p></footer>
                     </div>')
+             ),
+             tabPanel(
+               "Help",
+               HTML('User manual is available at <a href="https://github.com/long-rh/DSDApp">https://github.com/long-rh/DSDApp.</a> (opens a new tab)')
              ),
             footer=textOutput("keep_alive")
             
