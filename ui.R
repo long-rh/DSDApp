@@ -17,10 +17,10 @@ shinyUI(
                                   value=4),
                      #checkboxInput("fake_factor_option", "Fake factors", value = TRUE),
                      #categorical factorに対するモデル作成がまだできていない
-                     # numericInput("number_of_2_level_factors",
-                     #              "Number of 2-level factors",
-                     #              min=0,
-                     #              value=0),
+                     numericInput("number_of_2_level_factors",
+                                   "Number of 2-level factors",
+                                   min=0,
+                                   value=0),
                      numericInput("center_run_replication",
                                   "Center run (1-4)",
                                   min=1,max=4,
@@ -216,7 +216,7 @@ shinyUI(
              ),
              tabPanel(
                "Help",
-               HTML('User manual is available at <a href="https://github.com/long-rh/DSDApp">https://github.com/long-rh/DSDApp.</a> (opens a new tab)')
+               HTML('User manual is available at <a href="https://github.com/long-rh/DSDApp" target="_blank">https://github.com/long-rh/DSDApp.</a> (opens a new tab)')
              ),
             footer=textOutput("keep_alive")
             

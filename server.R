@@ -18,7 +18,7 @@ shinyServer(function(input, output, session) {
   })
   
   DSD <- reactive({
-    number_of_2_level_factors <- 0#categoricalに未対
+    number_of_2_level_factors <- input$number_of_2_level_factors#categoricalに未対
     #Not including categorical factors
     if ((number_of_2_level_factors==0)) {
       if (input$number_of_factors%%2==0) {
@@ -34,15 +34,15 @@ shinyServer(function(input, output, session) {
       }
     }
     #Including categorical factors
-    # }else if (number_of_2_level_factors !=0){
-    #   updateCheckboxInput(session, "fake_factor_option", value = FALSE)
-    #   design <- DefScreen(input$number_of_factors, c=input$number_of_2_level_factors)
-    #   if (input$center_run_replication >1) {
-    #     for (i in 1:(input$center_run_replication-1)) {
-    #       design <- rbind(design, tail(design,1))#Add center run
-    #     }
-    #   }
-    # }
+    else if (number_of_2_level_factors !=0){
+       #updateCheckboxInput(session, "fake_factor_option", value = FALSE)
+       design <- DefScreen(input$number_of_factors, c=input$number_of_2_level_factors)
+       if (input$center_run_replication >1) {
+         for (i in 1:(input$center_run_replication-1)) {
+           design <- rbind(design, tail(design,1))#Add center run
+         }
+       }
+     }
     if (input$simulation) {
       set.seed(1)
       design$Y<-3+2*design[,1]+4*design[,2]-1*design[,3]+3*design[,4]-2*design[,1]^2-2*design[,1]*design[,2]+design[,3]^2+rnorm(numeric(nrow(design)), mean = 0, sd = 0.3)
@@ -207,7 +207,7 @@ shinyServer(function(input, output, session) {
   regression <- eventReactive(input$Find_active_terms, {
     #X <- X()[!is.na(Y()),]
     #Y <- Y()[!is.na(Y())]
-    if (Y()!="NotSpecifiedY") {
+    if (Y()[1,1]!="NotSpecifiedY") {
       XY <- cbind(X(), Y())
       XY_reg <- cbind(XY[input$selectY], XY[input$selectX])
       result1 <- lm(data = XY_reg)#ideally, not include intercept
@@ -231,7 +231,7 @@ shinyServer(function(input, output, session) {
       cat("At least FOUR factors must be included!\n")
     }else if ((length(isolate(input$selectXF))<1) & isolate(nc())==1) {
       cat("Please include at least ONE fake factor or TWO center runs for more reliable analysis!\n")
-    }else if (isolate(Y())=="NotSpecifiedY"){
+    }else if (isolate(Y()[1,1])=="NotSpecifiedY"){
       cat("Y must be specified!\n")
     }else if (is.list(regression())){
       summary(regression())$coefficients
@@ -241,7 +241,7 @@ shinyServer(function(input, output, session) {
   #Find active main effects
   main_effects_regression <- eventReactive(input$Find_active_terms, {
     result1 <- regression()
-    if (Y()=="NotSpecifiedY"){
+    if (Y()[1,1]=="NotSpecifiedY"){
       return(cat("Y must be specified!"))
     }
     d <- df()[!is.na(Y()),]
@@ -298,7 +298,7 @@ shinyServer(function(input, output, session) {
   #Find second-order terms
   calc_second_order_effects <- eventReactive(input$Find_active_terms, {
     result1 <- regression()
-    if (Y()=="NotSpecifiedY"){
+    if (Y()[1,1]=="NotSpecifiedY"){
       return(cat("Y must be specified!"))
     }
     d <- df()[!is.na(Y()),]
@@ -315,11 +315,12 @@ shinyServer(function(input, output, session) {
       if (length(main_factors)!=0) {
         updateSelectInput(session, "selectX1", choices = colnames(X), selected = main_factors)
         updateSelectInput(session, "selectX2", 
-                          choices = colnames( setdiff(add_quadratic(X), X)),
+                          choices = setdiff(colnames(add_quadratic(X)), colnames(X)),
                           selected = setdiff(selected_effects_for_X2, main_factors))        
       }
       return(second_order_candidates)
     }
+    #fake factorがある場合
     if (length(input$selectX)>3 & (isolate(nc())>1|(length(isolate(input$selectXF))>0))) {
 
       Y_m <-as.matrix(Y)
@@ -351,8 +352,7 @@ shinyServer(function(input, output, session) {
       #############################################################
       if (se!=0) {
         X_main <- X[abs(result1$coefficients[-1]/se)>t]#valid main effect
-
-        if ( length(X_main)==0 |nrow(df())!=nrow(d) ) {#
+        if ( length(X_main)==0 |nrow(df())!=nrow(d) ) {
             second_order_candidates <- selectX2_all(X_resevoir = add_quadratic(X), Y)
             s <- second_order_candidates
             min_ind <- which(unlist(s[["AICc"]]==min(unlist(s[["AICc"]]))))
@@ -362,7 +362,7 @@ shinyServer(function(input, output, session) {
             if (length(main_factors)!=0) {
               updateSelectInput(session, "selectX1", choices = colnames(X), selected = main_factors)
               updateSelectInput(session, "selectX2", 
-                                choices = colnames( setdiff(add_quadratic(X), X)),
+                                choices = setdiff(colnames(add_quadratic(X)), colnames(X)),
                                 selected = setdiff(selected_effects_for_X2, main_factors))
             }
             
@@ -372,8 +372,8 @@ shinyServer(function(input, output, session) {
       }else if (se==0) {# se=0, つまりモルが完に数式で表せると(領域定したいと)
         X_main <- X[abs(result1$coefficients[-1])>1e-10]
         updateSelectInput(session, "selectX1", choices = colnames(X), selected = colnames(X_main))
-        updateSelectInput(session, "selectX2", 
-                          choices = colnames( setdiff(add_quadratic(X), X)),
+        updateSelectInput(session, "selectX2",
+                          choices = setdiff(colnames(add_quadratic(X)), colnames(X)),
                           selected = "")
         return(cat("No second-order effect."))
       }
@@ -386,7 +386,7 @@ shinyServer(function(input, output, session) {
       if (length(X_main)==1) {
         updateSelectInput(session, "selectX1", choices = colnames(X), selected = colnames(X_main))
         updateSelectInput(session, "selectX2", 
-                          choices = colnames( setdiff(add_quadratic(X), X)),
+                          choices = setdiff(colnames(add_quadratic(X)), colnames(X)),
                           selected = "")
         return(cat("No second-order effect."))
       }
@@ -408,14 +408,14 @@ shinyServer(function(input, output, session) {
         
         #Strong Heredity
         second_order_candidates <- selectX2(X_main=X_main, X_resevoir = add_quadratic(X_main, only_additional = T),  result_first$residuals)
-        
         s <- second_order_candidates
         min_ind <- which(unlist(s[["AICc"]]==min(unlist(s[["AICc"]]))))
         selected_effects_for_X2 <- unlist(s[["params"]][min_ind])
-        
+        #print(selected_effects_for_X2)
+        #print(setdiff(colnames(add_quadratic(X)), colnames(X)))
         updateSelectInput(session, "selectX1", choices = colnames(X), selected = colnames(X_main))
         updateSelectInput(session, "selectX2",
-                          choices = colnames( setdiff(add_quadratic(X), X)),
+                          choices = setdiff(colnames(add_quadratic(X)), colnames(X)),
                           selected = selected_effects_for_X2)
         return(second_order_candidates)
       }
@@ -445,7 +445,7 @@ shinyServer(function(input, output, session) {
   #Combined model
   observeEvent(input$Modify_model, showTab("tabset", target = "Step1", select = TRUE))
   regression_modified <- eventReactive(input$Modify_model, {
-    if (isolate(Y())!="NotSpecifiedY"){
+    if (isolate(Y()[1,1])!="NotSpecifiedY"){
       if(length(input$selectX)>3 & 
          #isolate(nc())>1|length(isolate(input$selectXF)>0)&
          ((length(input$selectX1)>0)|(length(input$selectX2)>0)) ) {
@@ -473,7 +473,7 @@ shinyServer(function(input, output, session) {
 
         updateSelectInput(session, "selectX1", choices = colnames(X), selected = colnames(X_main))
         updateSelectInput(session, "selectX2",
-                          choices = colnames( setdiff(add_quadratic(X), X)),
+                          choices = setdiff(colnames(add_quadratic(X)), colnames(X)),
                           selected = selected_effects_for_X2)
         return(second_order_candidates)
       }
@@ -484,7 +484,7 @@ shinyServer(function(input, output, session) {
   
   observeEvent(input$Build_combined_model, showTab("tabset", target = "Step2", select = TRUE))
   regression_combined <- eventReactive(input$Build_combined_model, {
-    if (isolate(Y())!="NotSpecifiedY"){
+    if (isolate(Y()[1,1])!="NotSpecifiedY"){
       if(length(input$selectX)>3 & 
          #isolate(nc())>1|length(isolate(input$selectXF)>0)&
          ((length(input$selectX1)>0)|(length(input$selectX2)>0)) ) {
