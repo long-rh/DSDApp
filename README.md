@@ -14,9 +14,10 @@ The factors of interest should be allocated in columns A-D. Factors are the vari
 Your experiment should be done by changing the levels (low: -1, middle: 0, high: 1) of the factors following the DSD table. These levels represent the different settings for each factor, allowing you to test their effects on the response variable. 
 
 The result of your experiment should be recorded and added in an extra column in the downloaded table. In Figure 2, instead of actual experiment data, sample data is given as an example. The data is produced by
-```math
-y=3+2A+4B-C+3D-2AA-2AB+CC+\varepsilon, \ \varepsilon \sim N(0,\sigma=0.3) \tag{1}. 
-```
+<p align="center">
+  <img src="image/eq1.png" width="60%">
+</p>
+
 
 The table generated in this step can be downloaded by clicking on "Download." You can find this DSD table and the sample data in "DSD.csv". This file can be opened in any spreadsheet software, allowing you to analyze your data and draw conclusions from the experiment.
 
@@ -104,3 +105,4 @@ Figure 7. Desirability functions for different optimizations; (a) minimization, 
 
 
 The optimization of the factor levels is performed by clicking "Maximize desirability."  For multi-objective optimization, the total desirability $D_t=\prod_{i}D_i$ is maximized. In the bottom pane in Figure 6, make sure that $D_i$ and $D_t$ are not zero; otherwise, optimization of output value(s) is not performed properly. The optimization is done by limited-memory quasi-Newton code for bound-constrained optimization (L-BFGS-B; the default function of “optim” in R language) and repeated ten times by changing the initial parameters.
+
